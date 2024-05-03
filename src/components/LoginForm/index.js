@@ -6,16 +6,12 @@ import './index.css'
 class LoginForm extends Component {
   state = {username: '', password: '', showErrorMeassage: false, errorMsg: ''}
 
-  onSubmitSuccess = JwsToken => {
+  onSubmitSuccess =  => {
     const {history} = this.props
-    Cookies.set('jwt_token', JwsToken, {expires: 30})
     history.replace('/')
   }
 
-  onSubmitErrorMsg = errorMsg => {
-    this.setState({showErrorMeassage: true, errorMsg})
-  }
-
+ 
   onSubmitForm = async event => {
     event.preventDefault()
     const {username, password} = this.state
@@ -31,17 +27,15 @@ class LoginForm extends Component {
     const response = await fetch(url, options)
     const data = await response.json()
     if (response.ok === true) {
-      this.onSubmitSuccess(data.jsw_token)
-    } else {
-      this.onSubmitErrorMsg(data.errorMsg)
-    }
+      this.onSubmitSuccess()
+    } 
   }
 
-  onChangeUserNameInput = event => {
+  onChangeUserName = event => {
     this.setState({username: event.target.value})
   }
 
-  onChangePassWordInput = event => {
+  onChangePassWord = event => {
     this.setState({password: event.target.value})
   }
 
@@ -58,7 +52,7 @@ class LoginForm extends Component {
           type="text"
           value={username}
           placeholder="Username"
-          onChange={this.onChangeUserNameInput}
+          onChange={this.onChangeUserName}
         />
       </>
     )
@@ -77,7 +71,7 @@ class LoginForm extends Component {
           id="password"
           value={password}
           placeholder="Password"
-          onChange={this.onChangePasswordInput}
+          onChange={this.onChangePassword}
         />
       </>
     )
